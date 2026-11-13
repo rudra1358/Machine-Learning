@@ -57,6 +57,10 @@
     .walkthrough { display:grid; gap:8px; margin:0; padding:0; list-style:none; counter-reset:lesson; }
     .walkthrough li { position:relative; min-height:36px; padding:8px 10px 8px 39px; border-radius:8px; background:#f2f3ee; color:#56625b; font-size:12px; counter-increment:lesson; }
     .walkthrough li::before { position:absolute; left:10px; top:7px; display:grid; place-items:center; width:21px; height:21px; border-radius:50%; background:var(--green-pale); color:var(--green-dark); content:counter(lesson); font-size:10px; font-weight:800; }
+    .detail-list { display:grid; gap:7px; margin:0; padding-left:20px; color:#56625b; font-size:12px; }
+    .detail-list li { padding-left:3px; }
+    .detail-list li p { margin:3px 0 0; color:var(--muted); font-size:12px; }
+    .output-note { margin-bottom:10px!important; }
     .visual { padding:15px; border:1px solid var(--line); border-radius:10px; background:#fbfbf7; }
     .visual svg { display:block; width:100%; height:auto; max-height:260px; }
     .visual-caption { margin:10px 0 0!important; font-size:11px!important; }

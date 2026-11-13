@@ -234,13 +234,23 @@ function renderLesson() {
     <div class="lesson-grid">
       <nav class="toc" aria-label="On this lesson">
         <strong>On this lesson</strong>
-        <a href="#concept">The concept</a><a href="#dataset">Example dataset</a><a href="#implementation">Implementation</a><a href="#visual">Visual guide</a><a href="#checklist">What to remember</a>
+        <a href="#concept">The concept</a><a href="#subtopics">Types & subtopics</a><a href="#parameters">Hyperparameters</a><a href="#dataset">Example dataset</a><a href="#implementation">Implementation</a><a href="#output">Example output</a><a href="#visual">Visual guide</a><a href="#checklist">What to remember</a>
       </nav>
       <article class="content">
         <section class="lesson-section" id="concept">
           <h2>The concept</h2>
           <p>${guide.info[1]}</p>
           <p class="when-note"><strong>When to use it:</strong> ${guide.info[2]}</p>
+        </section>
+        <section class="lesson-section" id="subtopics">
+          <h2>Types and subtopics explained</h2>
+          <p>Each item includes a short explanation of what it means and how it is used.</p>
+          <ul class="detail-list">${guide.subtopics.map((item, index) => `<li><strong>${item}</strong><p>${guide.subtopicExplanations[index]}</p></li>`).join("")}</ul>
+        </section>
+        <section class="lesson-section" id="parameters">
+          <h2>Hyperparameters and key settings</h2>
+          <p>For estimators, these are common hyperparameters to tune with validation data. For data-preparation topics, they are important method settings.</p>
+          <ul class="detail-list">${guide.settings.map(item => `<li>${item}</li>`).join("")}</ul>
         </section>
         <section class="lesson-section" id="dataset">
           <h2>Example dataset</h2>
@@ -252,6 +262,11 @@ function renderLesson() {
           <div class="requirements">Install: python -m pip install ${guide.packages.join(" ")}</div>
           <div class="code-toolbar"><span>Copy or save the complete example</span><div><button class="action-button" id="copy-code" type="button">Copy code</button> <button class="action-button" id="download-code" type="button">Download .py</button></div></div>
           <pre><code id="python-code"></code></pre>
+        </section>
+        <section class="lesson-section" id="output">
+          <h2>Example output</h2>
+          <p class="output-note">Representative output from this lesson's example. Tables are shortened where needed; plot or file output is described. Exact values or formatting can vary with library versions.</p>
+          <pre><code id="sample-output"></code></pre>
         </section>
         <section class="lesson-section" id="walkthrough">
           <h2>Walk through the implementation</h2>
@@ -271,6 +286,7 @@ function renderLesson() {
 
   document.getElementById("dataset-content").innerHTML = renderDataset(isImbalance);
   document.getElementById("python-code").textContent = guide.code;
+  document.getElementById("sample-output").textContent = guide.sampleOutput;
   const codeButton = document.getElementById("copy-code");
   codeButton.addEventListener("click", async () => {
     await navigator.clipboard.writeText(guide.code);

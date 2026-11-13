@@ -9,7 +9,7 @@ An interactive, beginner-friendly guide to the end-to-end machine-learning workf
 - **01 · Project workflow:** Follow the stages of an ML project in a practical order, and see which topics belong to each stage.
 - **02 · Choose an approach:** Explore guidance based on your data and the kind of problem you want to solve.
 - **03 · Topic map:** Browse topics grouped by their place in the workflow.
-- **04 · Hands-on learning library:** Open individual lessons with explanations, a sample dataset, Python code, a visual guide, and a walkthrough.
+- **04 · Hands-on learning library:** Open individual lessons with explanations of each topic type and subtopic, key hyperparameters or method settings, a sample dataset, complete Python code, representative output, a visual guide, and a walkthrough.
 
 The library covers data loading and exploration, preprocessing, missing values and outliers, feature engineering, train/validation/test splits, leakage, regression, classification, clustering, ensembles, evaluation, reproducibility, and deployment.
 
@@ -48,6 +48,7 @@ npm run deploy
 | `index.html` | Workflow guide, topic map, and learning library |
 | `topic.html` | Shared template for individual topic lessons |
 | `topic-guides.js` | Lesson descriptions, examples, and learning metadata |
+| `topic-details.js` | Per-topic subtopics, key settings, and representative example output |
 | `topic-page.js` | Renders lesson content, visual guides, and code/data downloads |
 | `vite.config.ts` | Vite multi-page build configuration |
 | `cloudflare.config.ts` | Cloudflare Workers project configuration |

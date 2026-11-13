@@ -1,3 +1,5 @@
+import { sampleOutputs, subtopicExplanations, topicDetails } from "./topic-details.js";
+
 export const topicInfo = {
   "working with csv files": ["Load tabular files", "Read a CSV into a DataFrame, inspect its shape and columns, and check parsing options such as separators, encodings, and missing-value markers.", "Use when your dataset is provided as a CSV. Confirm the file loaded as expected before analysis."],
   "working-with-json-and-sql": ["Load structured data", "Read nested or record-based JSON and select relevant tables or rows with SQL before making an analysis-ready table.", "Use when data arrives as API-style JSON, exports, or relational database tables."],
@@ -295,10 +297,14 @@ print("Test R²:", round(model.score(X_test, y_test), 3))`,
   functionTransform: `${preamble}
 import numpy as np
 from sklearn.preprocessing import FunctionTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import make_pipeline
 
-log_income = FunctionTransformer(np.log1p, validate=False)
-income = df[["income"]]
-transformed = log_income.fit_transform(income)
+log_income = make_pipeline(
+    SimpleImputer(strategy="median"),
+    FunctionTransformer(np.log1p),
+)
+transformed = log_income.fit_transform(df[["income"]])
 print(pd.DataFrame(transformed, columns=["log_income"]).head())`,
   power: `${preamble}
 from sklearn.preprocessing import PowerTransformer
@@ -912,13 +918,19 @@ export const lessonMeta = {
 
 export const topicGuides = Object.fromEntries(Object.entries(topicInfo).map(([slug, info]) => {
   const group = topicGroups[slug];
-  if (!group || !examples[group] || !lessonMeta[group]) {
+  const explanations = subtopicExplanations[group];
+  if (!group || !examples[group] || !lessonMeta[group] ||
+      !topicDetails[group] || !sampleOutputs[group] ||
+      !explanations || explanations.length !== topicDetails[group].subtopics.length) {
     throw new Error(`Missing tutorial content for topic: ${slug}`);
   }
   return [slug, {
     info,
     code: examples[group],
     group,
+    ...topicDetails[group],
+    subtopicExplanations: explanations,
+    sampleOutput: sampleOutputs[group],
     ...lessonMeta[group]
   }];
 }));
