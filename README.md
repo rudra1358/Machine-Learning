@@ -6,6 +6,8 @@ An interactive learning site with separate machine-learning and deep-learning pa
 
 **Deep learning course:** [ml-field-guide.rudra1358.workers.dev/deep-learning](https://ml-field-guide.rudra1358.workers.dev/deep-learning)
 
+**Machine learning course:** [ml-field-guide.rudra1358.workers.dev/ml](https://ml-field-guide.rudra1358.workers.dev/ml)
+
 ## What you'll find
 
 - **01 · Project workflow:** Follow the stages of an ML project in a practical order, and see which topics belong to each stage.
