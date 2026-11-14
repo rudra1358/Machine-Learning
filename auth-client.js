@@ -107,6 +107,15 @@ const emailField = createField({
   maxLength: 254,
 });
 
+const inviteCodeField = createField({
+  id: "auth-invite-code",
+  label: "Invitation code",
+  type: "text",
+  autocomplete: "off",
+  maxLength: 256,
+});
+inviteCodeField.wrapper.hidden = true;
+
 const passwordField = createField({
   id: "auth-password",
   label: "Password",
@@ -127,11 +136,12 @@ submitButton.type = "submit";
 
 const formNote = document.createElement("p");
 formNote.className = "auth-form-note";
-formNote.textContent = "Your account is stored securely and works across both learning paths.";
+formNote.textContent = "Only email addresses approved by the course owner can create an account.";
 
 form.append(
   nameField.wrapper,
   emailField.wrapper,
+  inviteCodeField.wrapper,
   passwordField.wrapper,
   formMessage,
   submitButton,
@@ -150,6 +160,8 @@ function setMode(mode) {
   const isSignUp = mode === "sign-up";
   nameField.wrapper.hidden = !isSignUp;
   nameField.input.required = isSignUp;
+  inviteCodeField.wrapper.hidden = !isSignUp;
+  inviteCodeField.input.required = isSignUp;
   passwordField.input.autocomplete = isSignUp ? "new-password" : "current-password";
   title.textContent = isSignUp ? "Create your account" : "Welcome back";
   submitButton.textContent = isSignUp ? "Create account" : "Sign in";
@@ -232,6 +244,14 @@ async function refreshSession() {
   currentUser = payload?.user || null;
   setAccountMessage("");
   renderAccountActions();
+  if (new URLSearchParams(window.location.search).get("access") === "required") {
+    if (currentUser) {
+      setAccountMessage("This account has not been approved for course access. Contact the course owner.");
+    } else {
+      setAccountMessage("Sign in with an approved account to access the course.");
+      openDialog("sign-in");
+    }
+  }
 }
 
 async function signOut() {
@@ -266,6 +286,7 @@ form.addEventListener("submit", async (event) => {
   };
   if (isSignUp) {
     body.name = nameField.input.value.trim();
+    body.inviteCode = inviteCodeField.input.value;
   }
 
   isBusy = true;

@@ -13,11 +13,14 @@ export default defineConfig({
     compatibilityFlags: ["nodejs_compat"],
     entrypoint: "./auth-worker.ts",
     assets: {
-      runWorkerFirst: ["/api/auth/*"],
+      runWorkerFirst: ["/*"],
     },
     env: {
+      ASSETS: bindings.assets(),
       AUTH_DB: bindings.d1({ name: authDatabaseName, id: authDatabaseId }),
+      AUTHORIZED_EMAILS: bindings.secret(),
       BETTER_AUTH_SECRET: bindings.secret(),
+      SIGNUP_INVITE_CODE: bindings.secret(),
     },
     "observability": {
       enabled: true,

@@ -46,17 +46,19 @@ npm run deploy
 
 Before deploying to a new Worker, set `BETTER_AUTH_SECRET` as a Cloudflare Worker secret. Do not use the local `.dev.vars` value for production.
 
-## Accounts
+## Course access
 
-The site supports email/password registration, sign-in, session persistence, and sign-out on all learning pages. Accounts are stored in the Cloudflare D1 database. Email verification and password-reset email delivery are not configured.
+Course pages and their lesson assets require a signed-in account. New accounts require both an email address in the Worker secret `AUTHORIZED_EMAILS` and the owner-provided invitation code in `SIGNUP_INVITE_CODE`. The Worker checks the email allowlist on every course request, so removing an address immediately revokes its access. Set `AUTHORIZED_EMAILS` to a comma-separated list of approved addresses and `SIGNUP_INVITE_CODE` to a strong random code in the Cloudflare dashboard under **Worker > Settings > Variables and Secrets**. Give the code only to invited users. This uses the existing Cloudflare Worker and D1 setup and does not require a paid email service.
 
-For local development, create a `.dev.vars` file containing a private random secret:
+For local development, put these values in `.dev.vars`:
 
 ```text
 BETTER_AUTH_SECRET=<at least 32 random characters>
+AUTHORIZED_EMAILS=<approved email addresses, comma-separated>
+SIGNUP_INVITE_CODE=<strong invitation code>
 ```
 
-Keep `.dev.vars` private; it is ignored by Git. The local database needs the Better Auth schema before account requests will work. With the app running, send a `POST` request to `/api/auth/_migrate` with an `Authorization: Bearer <local secret>` header. For production, configure `BETTER_AUTH_SECRET` as a Cloudflare Worker secret, deploy, and run the protected migration request once against the live site using that production secret.
+Keep `.dev.vars` private; it is ignored by Git. The local database needs the Better Auth schema before account requests will work. With the app running, send a `POST` request to `/api/auth/_migrate` with an `Authorization: Bearer <local secret>` header. For production, configure all three values as Cloudflare Worker secrets, deploy, and run the protected migration request once against the live site using the production `BETTER_AUTH_SECRET`.
 
 ## Project structure
 
