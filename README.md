@@ -87,3 +87,6 @@ HTML, CSS, JavaScript, Vite, and Cloudflare Workers. Examples use Python with Te
 ## Learning note
 
 The examples are designed to teach the workflow on a small dataset. For real projects, choose a validation strategy that matches how predictions will be used, keep test data out of model selection, and assess results in the context of your data and goals.
+
+to redeploy if something happens after adding new email id to cloudflare
+npm run deploy -- --force
