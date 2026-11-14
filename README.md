@@ -1,8 +1,10 @@
-# ML Field Guide
+# ML & Deep Learning Field Guide
 
-An interactive, beginner-friendly guide to the end-to-end machine-learning workflow—from understanding a dataset to evaluating and deploying a model.
+An interactive learning site with separate machine-learning and deep-learning paths.
 
 **Live website:** [ml-field-guide.rudra1358.workers.dev](https://ml-field-guide.rudra1358.workers.dev)
+
+**Deep learning course:** [ml-field-guide.rudra1358.workers.dev/deep-learning](https://ml-field-guide.rudra1358.workers.dev/deep-learning)
 
 ## What you'll find
 
@@ -10,10 +12,11 @@ An interactive, beginner-friendly guide to the end-to-end machine-learning workf
 - **02 · Choose an approach:** Explore guidance based on your data and the kind of problem you want to solve.
 - **03 · Topic map:** Browse topics grouped by their place in the workflow.
 - **04 · Hands-on learning library:** Open individual lessons with explanations of each topic type and subtopic, key hyperparameters or method settings, a sample dataset, complete Python code, representative output, a visual guide, and a walkthrough.
+- **05 · Deep learning course:** A separate course with the same four-part structure—workflow, model chooser, topic map, and detailed lesson library—covering perceptrons and MLPs through CNNs, RNNs, attention, and Transformers.
 
 The library covers data loading and exploration, preprocessing, missing values and outliers, feature engineering, train/validation/test splits, leakage, regression, classification, clustering, ensembles, evaluation, reproducibility, and deployment.
 
-Lessons use a small embedded customer dataset where applicable, so examples do not depend on downloading a dataset. Code and CSV downloads are available from the lesson pages.
+The ML lessons use an embedded customer dataset where applicable. Deep learning examples include clearly labeled synthetic teaching data and public Keras datasets such as MNIST and IMDB. Python examples can be downloaded from each deep learning lesson.
 
 ## Run locally
 
@@ -41,21 +44,41 @@ The site is configured for Cloudflare Workers. Sign in to Cloudflare with the `c
 npm run deploy
 ```
 
+Before deploying to a new Worker, set `BETTER_AUTH_SECRET` as a Cloudflare Worker secret. Do not use the local `.dev.vars` value for production.
+
+## Accounts
+
+The site supports email/password registration, sign-in, session persistence, and sign-out on all learning pages. Accounts are stored in the Cloudflare D1 database. Email verification and password-reset email delivery are not configured.
+
+For local development, create a `.dev.vars` file containing a private random secret:
+
+```text
+BETTER_AUTH_SECRET=<at least 32 random characters>
+```
+
+Keep `.dev.vars` private; it is ignored by Git. The local database needs the Better Auth schema before account requests will work. With the app running, send a `POST` request to `/api/auth/_migrate` with an `Authorization: Bearer <local secret>` header. For production, configure `BETTER_AUTH_SECRET` as a Cloudflare Worker secret, deploy, and run the protected migration request once against the live site using that production secret.
+
 ## Project structure
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Workflow guide, topic map, and learning library |
+| `index.html` | Learning-path chooser |
+| `ml.html` | Machine-learning workflow guide |
 | `topic.html` | Shared template for individual topic lessons |
 | `topic-guides.js` | Lesson descriptions, examples, and learning metadata |
 | `topic-details.js` | Per-topic subtopics, key settings, and representative example output |
 | `topic-page.js` | Renders lesson content, visual guides, and code/data downloads |
+| `deep-learning.html` | Standalone deep learning course interface |
+| `deep-learning.js` | Deep learning curriculum, lesson rendering, examples, and visualizations |
+| `auth-worker.ts` | Better Auth Worker routes and protected D1 schema migration endpoint |
+| `auth-client.js` | Shared registration, sign-in, session, and sign-out controls |
+| `auth.css` | Shared account controls and accessible dialog styling |
 | `vite.config.ts` | Vite multi-page build configuration |
 | `cloudflare.config.ts` | Cloudflare Workers project configuration |
 
 ## Built with
 
-HTML, CSS, JavaScript, Vite, and Cloudflare Workers. The lesson examples use Python and, depending on the topic, libraries such as pandas, NumPy, and scikit-learn.
+HTML, CSS, JavaScript, Vite, and Cloudflare Workers. Examples use Python with TensorFlow/Keras, NumPy, and scikit-learn.
 
 ## Learning note
 

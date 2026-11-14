@@ -216,7 +216,7 @@ function renderDataset(isImbalance) {
 function renderLesson() {
   if (!guide || !slug) {
     document.title = "Lesson not found — ML Field Guide";
-    root.innerHTML = `<section class="error-state"><div class="eyebrow">Learning library</div><h1>Lesson not found</h1><p>This topic does not have a lesson link. Return to the library to choose a topic.</p><a class="back-link" href="index.html#topic-library">← Browse all lessons</a></section>`;
+    root.innerHTML = `<section class="error-state"><div class="eyebrow">Learning library</div><h1>Lesson not found</h1><p>This topic does not have a lesson link. Return to the library to choose a topic.</p><a class="back-link" href="ml.html#topic-library">← Browse all lessons</a></section>`;
     return;
   }
 

@@ -5,14 +5,20 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 
-export default defineConfig(({ command }) => ({
-  plugins: command === "build" ? [cloudflare()] : [],
-  build: {
-    rollupOptions: {
-      input: {
-        main: resolve(root, "index.html"),
-        topic: resolve(root, "topic.html"),
+export default defineConfig({
+  plugins: [cloudflare()],
+  environments: {
+    client: {
+      build: {
+        rollupOptions: {
+          input: {
+            main: resolve(root, "index.html"),
+            machineLearning: resolve(root, "ml.html"),
+            topic: resolve(root, "topic.html"),
+            deepLearning: resolve(root, "deep-learning.html"),
+          },
+        },
       },
     },
   },
-}));
+});

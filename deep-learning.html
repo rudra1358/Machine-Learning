@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111a2b">
+  <meta name="description" content="A detailed, visual deep learning course: neural networks, optimization, CNNs, RNNs, attention, Transformers, and projects.">
+  <title>Deep Learning — Neural Field Guide</title>
+  <link rel="stylesheet" href="./auth.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink:#172033;--muted:#667085;--line:#e4e8ef;--paper:#f5f7fb;--white:#fff;
+      --navy:#111a2b;--navy2:#1a2740;--blue:#466be3;--blue-pale:#edf1ff;
+      --orange:#f29c55;--green:#22856d;--shadow:0 12px 35px rgba(20,33,58,.07)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.7 "Segoe UI",Arial,sans-serif}
+    button,input{font:inherit}
+    a{color:inherit}
+    .topbar{position:sticky;z-index:5;top:0;background:rgba(17,26,43,.97);color:#fff;border-bottom:1px solid #293650}
+    .topbar-inner{width:min(1440px,100%);height:62px;margin:auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+    .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:12px;font-weight:800;letter-spacing:.08em}
+    .brand-mark{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--blue);font-size:13px;letter-spacing:0}
+    .toplinks{display:flex;align-items:center;gap:17px}
+    .toplinks a{color:#c6ccda;text-decoration:none;font-size:10px}
+    .toplinks a:hover{color:white}
+    .course-layout{width:min(1440px,100%);min-height:calc(100vh - 62px);margin:auto;display:grid;grid-template-columns:290px minmax(0,1fr)}
+    .sidebar{position:sticky;top:62px;height:calc(100vh - 62px);overflow:auto;padding:20px 14px 28px;background:#fff;border-right:1px solid var(--line)}
+    .course-label{padding:4px 10px 12px;color:#8490a2;font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    .course-search{width:100%;margin-bottom:15px;padding:10px 11px;border:1px solid var(--line);border-radius:8px;outline:none;font-size:11px}
+    .course-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px #466be31a}
+    .unit-heading{margin:15px 9px 5px;color:#929bad;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .lesson-link{width:100%;display:flex;align-items:flex-start;gap:9px;padding:7px 9px;border:0;border-radius:7px;background:transparent;color:#536075;text-align:left;cursor:pointer;font-size:10px;line-height:1.45}
+    .lesson-link:hover{background:#f4f6fb;color:var(--ink)}
+    .lesson-link[aria-current="page"]{background:var(--blue-pale);color:#2948ad;font-weight:750}
+    .lesson-index{flex:none;width:19px;color:#a0a9b8;font:9px/1.6 Consolas,monospace}
+    .main{min-width:0;padding:0 40px 70px}
+    .hero{position:relative;overflow:hidden;margin:26px auto 23px;padding:36px 39px;border-radius:17px;background:linear-gradient(120deg,#111a2b 0%,#1e2d4d 70%,#2c3f6c);color:#fff;box-shadow:var(--shadow)}
+    .hero:after{position:absolute;right:9%;top:-90px;width:280px;height:280px;border:1px solid #ffffff20;border-radius:50%;box-shadow:0 0 0 32px #ffffff08,0 0 0 64px #ffffff06;content:""}
+    .eyebrow{color:#aabaff;font-size:9px;font-weight:800;letter-spacing:.17em;text-transform:uppercase}
+    .hero h1{position:relative;z-index:1;max-width:760px;margin:9px 0 10px;font-size:clamp(29px,4vw,47px);line-height:1.12;letter-spacing:-.045em}
+    .hero p{position:relative;z-index:1;max-width:730px;margin:0;color:#d0d6e2;font-size:13px}
+    .hero-stats{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;margin-top:19px}
+    .hero-stats span{padding:5px 9px;border:1px solid #ffffff26;border-radius:99px;color:#e3e7ef;font-size:9px}
+    .overview-section{padding:26px 0;border-top:1px solid var(--line);scroll-margin-top:78px}
+    .section-heading{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:16px}
+    .section-heading h2{margin:4px 0 0;font-size:clamp(21px,2.7vw,29px);line-height:1.2;letter-spacing:-.035em}
+    .section-heading p{max-width:510px;margin:0;color:var(--muted);font-size:11px}
+    .section-kicker{color:var(--blue);font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .workflow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+    .workflow-card{min-height:120px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#fff;text-align:left;cursor:pointer}
+    .workflow-card:hover,.workflow-card:focus-visible{border-color:#aab8e7;box-shadow:var(--shadow);outline:none}
+    .workflow-card span{color:var(--blue);font-size:9px;font-weight:800;letter-spacing:.1em}
+    .workflow-card strong{display:block;margin:5px 0;font-size:11px;line-height:1.4}
+    .workflow-card small{display:block;color:var(--muted);font-size:9px;line-height:1.5}
+    .model-panel{padding:16px;border:1px solid var(--line);border-radius:11px;background:#fff}
+    .model-options{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+    .model-option,.unit-filter{padding:7px 10px;border:1px solid var(--line);border-radius:99px;background:#fff;color:#5d687b;cursor:pointer;font-size:10px;font-weight:700}
+    .model-option[aria-pressed="true"],.unit-filter[aria-pressed="true"]{border-color:var(--blue);background:var(--blue);color:#fff}
+    .model-recommendation{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;padding:13px;border-radius:8px;background:#f4f6fb}
+    .model-recommendation strong{display:block;margin-bottom:3px;font-size:12px}
+    .model-recommendation p{margin:0;color:var(--muted);font-size:10px}
+    .recommend-button{padding:8px 11px;border:0;border-radius:7px;background:var(--navy);color:#fff;cursor:pointer;font-size:10px;font-weight:700}
+    .topic-map-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .topic-unit-card{padding:13px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .topic-unit-card h3{margin:0 0 3px;font-size:12px}
+    .topic-unit-card p{margin:0 0 8px;color:var(--muted);font-size:9px}
+    .topic-unit-card button{margin:2px 4px 2px 0;padding:5px 7px;border:1px solid #e8ebf3;border-radius:6px;background:#f7f8fb;color:#4d5a70;cursor:pointer;font-size:9px;text-align:left}
+    .topic-unit-card button:hover{border-color:#aab8e7;color:#2948ad}
+    .library-tools{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .library-filters{display:flex;flex-wrap:wrap;gap:5px}
+    .unit-filter{padding:6px 9px;font-size:9px}
+    .library-search{width:min(235px,100%);padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;outline:none;font-size:10px}
+    .library-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px #466be31a}
+    .library-count{margin:0 0 9px;color:var(--muted);font-size:9px}
+    .library-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+    .library-card{min-height:68px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;text-align:left;cursor:pointer}
+    .library-card:hover,.library-card:focus-visible{border-color:#aab8e7;background:#fbfcff;outline:none}
+    .library-card span{display:block;margin-bottom:2px;color:var(--blue);font-size:8px;font-weight:800;text-transform:uppercase}
+    .library-card strong{font-size:10px;line-height:1.35}
+    .section-nav{display:grid;gap:4px;margin:0 0 14px;padding:0 5px}
+    .section-nav a{padding:6px 7px;border-radius:6px;color:#68758b;text-decoration:none;font-size:9px}
+    .section-nav a:hover{background:#f4f6fb;color:#2948ad}
+    .overview-link{color:#aabaff!important}
+    .no-library-results{grid-column:1/-1;padding:20px;border:1px dashed var(--line);border-radius:8px;color:var(--muted);font-size:11px;text-align:center}
+    .layout-body{display:grid;grid-template-columns:minmax(0,1fr) 205px;align-items:start;gap:20px}
+    .article{min-width:0}
+    .article-header{padding:16px 2px 18px}
+    .article-kicker{color:var(--blue);font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+    .article-header h2{margin:5px 0 7px;font-size:clamp(26px,3vw,37px);line-height:1.2;letter-spacing:-.04em}
+    .article-lead{max-width:800px;margin:0;color:var(--muted);font-size:13px}
+    .article-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+    .pill{padding:4px 8px;border-radius:99px;background:#e9edf5;color:#59657a;font-size:9px;font-weight:700}
+    .lesson-nav{display:flex;justify-content:space-between;gap:10px;margin:0 0 14px}
+    .nav-button,.action-button{padding:8px 11px;border:1px solid var(--line);border-radius:7px;background:#fff;color:#34415a;cursor:pointer;font-size:10px;font-weight:700}
+    .nav-button:disabled{opacity:.45;cursor:default}
+    .lesson-section{margin-bottom:13px;padding:19px 20px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 2px 8px #20304c05}
+    .lesson-section h3{margin:0 0 9px;font-size:16px;line-height:1.35;letter-spacing:-.02em}
+    .lesson-section h4{margin:14px 0 4px;font-size:12px}
+    .lesson-section p{margin:0 0 9px;color:#5d687b;font-size:11px}
+    .lesson-section p:last-child{margin-bottom:0}
+    .takeaway{padding:12px 13px;border-left:3px solid var(--orange);border-radius:0 7px 7px 0;background:#fff5e9;color:#634829!important}
+    .math{overflow:auto;margin:10px 0;padding:13px 15px;border-radius:8px;background:#121c30;color:#f1f3f8;font:12px/1.7 Consolas,"Courier New",monospace}
+    .subtopic-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0;padding:0;list-style:none}
+    .subtopic-list li{padding:9px 10px;border-radius:8px;background:#f4f6fa;color:#4d5a70;font-size:10px}
+    .subtopic-list strong{display:block;margin-bottom:2px;color:#27334b;font-size:10px}
+    .parameter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+    .parameter{padding:10px;border:1px solid #edf0f5;border-radius:8px;background:#fbfcfe}
+    .parameter code{color:#334fc1;font-size:10px;font-weight:750}
+    .parameter p{margin:3px 0 0;font-size:10px}
+    .visual{padding:10px;border:1px solid #e8ebf3;border-radius:9px;background:#fbfcff}
+    .visual-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:5px}
+    .visual-top strong{font-size:10px}
+    .visual svg{display:block;width:100%;height:auto;max-height:270px}
+    .visual-caption{margin:7px 0 0!important;font-size:9px!important}
+    .diagram-node{fill:#fff;stroke:#9eadd3;stroke-width:1.6}
+    .diagram-node.active{fill:#eaf0ff;stroke:#466be3}
+    .diagram-link{stroke:#b7c1d5;stroke-width:1.5}
+    .diagram-link.active{stroke:#ed9650;stroke-width:2.5;stroke-dasharray:6 4;animation:flow .7s linear infinite}
+    @keyframes flow{to{stroke-dashoffset:-20}}
+    .dataset-box{overflow:auto;padding:10px;border-radius:8px;background:#f4f6fa;font:10px/1.65 Consolas,monospace;color:#34415a}
+    pre{position:relative;max-height:520px;overflow:auto;margin:0;padding:16px;border-radius:9px;background:#121c30;color:#edf0f6;font:10px/1.65 Consolas,"Courier New",monospace;tab-size:4}
+    .code-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+    .code-heading span{color:var(--muted);font-size:10px}
+    .code-actions{display:flex;gap:6px}
+    .action-button{padding:6px 9px;font-size:9px}
+    .walkthrough{display:grid;gap:7px;margin:10px 0 0;padding:0;list-style:none;counter-reset:walk}
+    .walkthrough li{position:relative;padding:8px 10px 8px 34px;border-radius:7px;background:#f5f7fb;color:#59657a;font-size:10px;counter-increment:walk}
+    .walkthrough li:before{position:absolute;left:9px;top:7px;display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#e8edff;color:#334fc1;content:counter(walk);font-size:9px;font-weight:800}
+    .output{padding:12px;border-radius:8px;background:#111a2b;color:#e4e9f2;font:10px/1.7 Consolas,monospace;white-space:pre-wrap}
+    .output-label{margin-bottom:6px!important;color:#9eadd3!important;font-size:9px!important}
+    .toc{position:sticky;top:78px;padding:14px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .toc strong{display:block;margin:0 0 8px;font-size:10px}
+    .toc a{display:block;padding:5px 2px;color:#69758a;text-decoration:none;font-size:9px}
+    .toc a:hover{color:var(--blue)}
+    .interactive{padding:12px;border-radius:9px;background:#f4f6fb}
+    .range-row{display:flex;align-items:center;gap:10px;font-size:10px}
+    .range-row input{flex:1;accent-color:var(--blue)}
+    .range-value{min-width:62px;color:#334fc1;font:10px Consolas,monospace}
+    .activation-result{margin-top:8px;padding:8px;border-radius:7px;background:#fff;color:#36435a;font:11px Consolas,monospace}
+    .empty-state{padding:40px 20px;text-align:center;color:var(--muted)}
+    .footer-note{margin-top:18px;color:#8993a3;font-size:9px;text-align:center}
+    @media(max-width:1050px){.main{padding:0 24px 50px}.layout-body{grid-template-columns:minmax(0,1fr)}.toc{position:static;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}.toc strong{width:100%}.toc a{padding:2px}.workflow-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:760px){.course-layout{grid-template-columns:1fr}.sidebar{position:static;height:auto;max-height:290px;border-right:0;border-bottom:1px solid var(--line)}.sidebar nav:not(.section-nav){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px 5px}.unit-heading{grid-column:1/-1}.main{padding:0 15px 40px}.hero{padding:28px 23px}.topbar-inner{padding:0 15px;overflow:auto}.toplinks{flex:none}.toplinks a:nth-child(6){display:none}.workflow-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-heading{display:block}.section-heading p{margin-top:7px}}
+    @media(max-width:480px){.subtopic-list,.parameter-grid{grid-template-columns:1fr}.lesson-section{padding:15px}.hero-stats{gap:5px}.sidebar nav:not(.section-nav){grid-template-columns:1fr}.topic-map-grid{grid-template-columns:1fr}.library-grid{grid-template-columns:1fr}.library-tools{align-items:stretch;flex-direction:column}.model-recommendation{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">∑</span> NEURAL FIELD GUIDE</a>
+      <nav class="toplinks" aria-label="Course navigation">
+        <a href="index.html#learning-paths">← Learning paths</a>
+        <a class="overview-link" href="#section-01">01 Workflow</a>
+        <a class="overview-link" href="#section-02">02 Choose a model</a>
+        <a class="overview-link" href="#section-03">03 Topic map</a>
+        <a class="overview-link" href="#section-04">04 Lesson library</a>
+        <a href="#lesson-content">Open lesson</a>
+      </nav>
+    </div>
+  </header>
+  <div class="course-layout" id="course">
+    <aside class="sidebar" aria-label="Deep learning course contents">
+      <div class="course-label">Deep learning · Course contents</div>
+      <nav class="section-nav" aria-label="Course sections">
+        <a href="#section-01">01 · Learning workflow</a>
+        <a href="#section-02">02 · Choose a model</a>
+        <a href="#section-03">03 · Topic map</a>
+        <a href="#section-04">04 · Detailed lessons</a>
+      </nav>
+      <input id="course-search" class="course-search" type="search" placeholder="Find a topic..." aria-label="Search course topics">
+      <nav id="course-nav"></nav>
+    </aside>
+    <main class="main">
+      <section class="hero">
+        <div class="eyebrow">From one artificial neuron to foundation models</div>
+        <h1>Deep learning, built from first principles.</h1>
+        <p>A visual, hands-on course covering the math, implementation choices, training behavior, and real projects behind modern neural networks. Choose any lesson in the course contents to begin.</p>
+        <div class="hero-stats"><span id="lesson-total">Complete topic library</span><span>Math + intuition</span><span>Runnable Python examples</span><span>Interactive diagrams</span><span>End-to-end projects</span></div>
+      </section>
+      <section class="overview-section" id="section-01">
+        <div class="section-heading">
+          <div><div class="section-kicker">01 / The learning workflow</div><h2>One course, in the right order</h2></div>
+          <p>Follow the path from a single artificial neuron to modern sequence models. Select a step to browse its lessons.</p>
+        </div>
+        <div class="workflow-grid" id="workflow-grid"></div>
+      </section>
+      <section class="overview-section" id="section-02">
+        <div class="section-heading">
+          <div><div class="section-kicker">02 / Let the data guide you</div><h2>Choose an architecture for the input</h2></div>
+          <p>Use this as a starting point, then compare with a simpler baseline and validate on data that matches the real task.</p>
+        </div>
+        <div class="model-panel">
+          <div class="model-options" role="group" aria-label="Choose your deep learning data type">
+            <button class="model-option" type="button" data-model-choice="tabular" aria-pressed="true">Tabular data</button>
+            <button class="model-option" type="button" data-model-choice="image" aria-pressed="false">Images</button>
+            <button class="model-option" type="button" data-model-choice="sequence" aria-pressed="false">Ordered sequences</button>
+            <button class="model-option" type="button" data-model-choice="text" aria-pressed="false">Text generation</button>
+          </div>
+          <div class="model-recommendation">
+            <div><strong id="model-title"></strong><p id="model-description"></p></div>
+            <button class="recommend-button" id="model-recommend" type="button">Open recommended lesson →</button>
+          </div>
+        </div>
+      </section>
+      <section class="overview-section" id="section-03">
+        <div class="section-heading">
+          <div><div class="section-kicker">03 / Topics, organized</div><h2>Find a topic in the course</h2></div>
+          <p>Browse all seven areas of deep learning. Open a lesson for its full explanation, visual guide, worked example, and code.</p>
+        </div>
+        <div class="topic-map-grid" id="topic-map-grid"></div>
+      </section>
+      <section class="overview-section" id="section-04">
+        <div class="section-heading">
+          <div><div class="section-kicker">04 / The complete learning library</div><h2>Learn each topic hands-on</h2></div>
+          <p>Search 118 step-by-step lessons, including project walkthroughs, with detailed code, hyperparameters, output, and visualizations.</p>
+        </div>
+        <div class="library-tools">
+          <div class="library-filters" id="library-filters" role="group" aria-label="Filter lessons by course unit"></div>
+          <input class="library-search" id="library-search" type="search" placeholder="Search lessons..." aria-label="Search detailed lessons">
+        </div>
+        <p class="library-count" id="library-count" aria-live="polite"></p>
+        <div class="library-grid" id="library-grid"></div>
+      </section>
+      <div class="layout-body" id="lesson-content">
+        <article class="article" id="article"></article>
+        <aside class="toc" aria-label="On this lesson">
+          <strong>In this lesson</strong>
+          <a href="#understanding">Core idea & intuition</a>
+          <a href="#mechanics">How it works</a>
+          <a href="#subtopics">Subtopics</a>
+          <a href="#visualization">Visualize it</a>
+          <a href="#example">Dataset & example</a>
+          <a href="#implementation">Implementation</a>
+          <a href="#tuning">Hyperparameters</a>
+          <a href="#pitfalls">Pitfalls & checks</a>
+        </aside>
+      </div>
+      <div class="footer-note">Use a validation set for choices; keep the test set for a final evaluation. Code examples are teaching baselines, not production defaults.</div>
+    </main>
+  </div>
+  <script type="module" src="./deep-learning.js"></script>
+  <script type="module" src="./auth-client.js"></script>
+</body>
+</html>
